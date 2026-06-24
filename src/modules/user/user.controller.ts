@@ -1,31 +1,43 @@
-import { Request, Response } from 'express';
-
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
 import { userService } from './user.service';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
 
-const registerUser = async (req: Request, res: Response) => {
-   try {
+
+const registerUser = catchAsync(
+   async (req: Request, res: Response, next: NextFunction) => {
       const payload = req.body;
-
       const user = await userService.registerUserIntoDB(payload);
 
-      res.status(httpStatus.CREATED).json({
+      sendResponse(res, {
          success: true,
          statusCode: httpStatus.CREATED,
-         message: 'User Registered successful',
+         message: 'User created Successfully',
          data: { user },
       });
-   } catch (error) {
-      console.log(error);
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-         success: false,
-         statusCode: httpStatus.INTERNAL_SERVER_ERROR,
-         message: 'Failed to register user',
-         error: (error as Error).message,
+   }
+);
+
+const getMyProfile = catchAsync(
+   async (req: Request, res: Response, next: NextFunction) => {
+      console.log(req.user, 'from controller');
+      const profile = await userService.getMyProfileFromDB(
+         req.user?.id as string
+      );
+      sendResponse(res, {
+         success: true,
+         statusCode: httpStatus.OK,
+         message: 'User Profile Fached successfully!',
+         data: profile,
       });
    }
-};
+);
+
+const updateMyProfile = () => {};
 
 export const userController = {
    registerUser,
+   getMyProfile,
+   updateMyProfile,
 };
