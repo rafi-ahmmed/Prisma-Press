@@ -4,7 +4,6 @@ import { userService } from './user.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 
-
 const registerUser = catchAsync(
    async (req: Request, res: Response, next: NextFunction) => {
       const payload = req.body;
@@ -34,7 +33,24 @@ const getMyProfile = catchAsync(
    }
 );
 
-const updateMyProfile = () => {};
+const updateMyProfile = catchAsync(
+   async (req: Request, res: Response, next: NextFunction) => {
+      const userId = req.user?.id as string;
+      const payload = req.body;
+
+      const updatedProfile = await userService.updateMyProfileIntoDB(
+         userId,
+         payload
+      );
+
+      sendResponse(res, {
+         success: true,
+         statusCode: httpStatus.OK,
+         message: 'User profile updated successfully',
+         data: updatedProfile,
+      });
+   }
+);
 
 export const userController = {
    registerUser,

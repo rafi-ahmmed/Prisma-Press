@@ -11,10 +11,15 @@ router.get(
    auth(ROLE.ADMIN, ROLE.AUTHOR, ROLE.USER),
    userController.getMyProfile
 );
-
 router.put(
    '/my-profile',
    auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR),
+   userController.updateMyProfile
+);
+
+router.put(
+   '/my-profile',
+   auth(ROLE.ADMIN, ROLE.AUTHOR, ROLE.USER),
    userController.updateMyProfile
 );
 

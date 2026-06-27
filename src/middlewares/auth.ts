@@ -22,6 +22,7 @@ declare global {
 const auth = (...requiredRoles: ROLE[]) => {
    return catchAsync(
       async (req: Request, res: Response, next: NextFunction) => {
+         console.log('auth middleware hit');
          const token = req.cookies.accessToken
             ? req.cookies.accessToken
             : req.headers.authorization?.startsWith('Bearer ')
