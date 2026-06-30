@@ -35,9 +35,17 @@ const getCommentByAuthorId = async (authorId: string) => {
    const comments = await prisma.comment.findMany({
       where: { authorId },
       include: {
+         post: {
+            select: {
+               id: true,
+               title: true,
+               views: true,
+            },
+         },
          author: {
-            omit: {
-               password: true,
+            select: {
+               id: true,
+               email: true,
             },
          },
       },
@@ -54,8 +62,18 @@ const getCommentByCommentId = async (commentId: string) => {
    const result = await prisma.comment.findUniqueOrThrow({
       where: { id: commentId },
       include: {
+         post: {
+            select: {
+               id: true,
+               title: true,
+               views: true,
+            },
+         },
          author: {
-            omit: { password: true },
+            select: {
+               id: true,
+               email: true,
+            },
          },
       },
    });
@@ -118,6 +136,12 @@ const updateCommentByAdmin = async (
          id: commentId,
       },
    });
+
+   if (comment.status === payload.status) {
+      throw new Error(
+         `You provide status ${payload.status} is already upto date.`
+      );
+   }
 
    const updatedCommentStatus = await prisma.comment.update({
       where: {

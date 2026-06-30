@@ -1,0 +1,110 @@
+// ? Filtering/Exact match without and operator in multiple feald
+      // where: {
+      //    title: 'My first Post',
+      //    content: 'Ronaldo',
+      // },
+
+      //* OR ---- Both are same..Exact value that contains that feald
+
+      // ? Filtering/Exact match with AND operator in multiple feild
+      // where: {
+      //    AND: [
+      //       { title: 'My first Post' },
+      //       { content: 'Ronaldo' },
+      //       {
+      //          tags: {
+      // equals: ['typescript', 'prisma', 'express'],
+      // has:"typescript"
+      // hasEvery: ['express'],
+      // hasSome: ['typescript', 'prisma', 'express'],
+      // isEmpty: false,
+      //             isEmpty: true,
+      //          },
+      //       },
+      //    ],
+      // },
+
+      // ! Searching or Partial match
+
+      // * This is not ideal for partial match
+      // where: {
+      //    title: {
+      //       contains: 'ronaldo',
+      //       mode: 'insensitive',
+      //    },
+      //    content: {
+      //       contains: 'Ronaldo',
+      //    },
+      // },
+
+      // * Searching / Partial search with or operator
+      // where: {
+      //    OR: [
+      //       {
+      //          title: {
+      //             contains: 'ron',
+      //             mode: 'insensitive',
+      //          },
+      //       },
+      //       {
+      //          content: {
+      //             contains: 'ron',
+      //             mode: 'insensitive',
+      //          },
+      //       },
+      //    ],
+      // },
+
+      // ?Combine search(OR Operator) and filtering (AND) Operator
+
+      // where: {
+      //    AND: [
+      //       {
+      //          // Searching
+      //          OR: [
+      //             {
+      //                title: {
+      //                   contains: 'Messi',
+      //                   mode: 'insensitive',
+      //                },
+      //             },
+      //             {
+      //                content: {
+      //                   contains: 'Messi',
+      //                   mode: 'insensitive',
+      //                },
+      //             },
+      //          ],
+      //       },
+      //       // Filtering
+      //       {
+      //          title: 'Ronaldo Nazario',
+      //       },
+      //       {
+      //          content: 'Ronaldo',
+      //       },
+      //    ],
+      // },
+
+      // ! Pagination
+
+      //* 1st page : take1 skip0
+      //* 2nd page : take1 skip1
+      //* 3rd page : take1 skip2
+
+      // take: 1,
+      // skip: 5,
+
+      //**
+      // per page - 1
+      //    (page-1)*limit
+      //  skip = (1-1)*1 = 0 //Page=1
+      //  skip = (2-1)*1 =1 //page=2
+      //  skip = (3-1)*1 = 2 //page=3
+      // **
+
+      // ! Sorting
+      // orderBy: {
+      //    createdAt: 'desc',
+      //    title: 'asc',
+      // },
